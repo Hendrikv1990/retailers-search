@@ -66,3 +66,8 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+
+https://docs.mapbox.com/mapbox-gl-js/example/filter-features-within-map-view/
+https://docs.mapbox.com/api/search/
+https://docs.mapbox.com/mapbox-gl-js/example/mapbox-gl-geocoder-limit-region/

@@ -6,14 +6,15 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-     "deck.gl": "8.0.15",
+    "deck.gl": "8.0.15",
     "gsap": "3.1.1",
+    "normalize.css": "^8.0.1",
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "react-map-gl": "5.2.3",
     "react-map-gl-geocoder": "2.0.11",
-    "react-scripts": "3.4.0"
-
+    "react-scripts": "3.4.0",
+    "styled-components": "^5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -35,5 +36,16 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json,css}": [
+      "prettier --single-quote --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

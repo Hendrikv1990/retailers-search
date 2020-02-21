@@ -35,7 +35,7 @@ class App extends Component {
     viewport: {
       latitude: 50.92,
       longitude: 11.946,
-      zoom: 5.52,
+      zoom: 6,
     },
     searchResultLayer: null,
   }
@@ -72,7 +72,7 @@ class App extends Component {
   }
 
   handleGeocoderViewportChange = viewport => {
-    const geocoderDefaultOverrides = { transitionDuration: 1000, zoom: 10 }
+    const geocoderDefaultOverrides = { transitionDuration: 1000, zoom: 14.5 }
 
     return this.handleViewportChange({
       ...viewport,

@@ -1,13 +1,15 @@
-import 'normalize.css'
-import DeckGL, { GeoJsonLayer } from 'deck.gl'
 import { Power3 } from 'gsap'
+import throttle from 'lodash.throttle'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import 'normalize.css'
 import React, { Component } from 'react'
-import MapGL, { FlyToInterpolator } from 'react-map-gl'
+import MapGL, { FlyToInterpolator, Marker } from 'react-map-gl'
 import Geocoder from 'react-map-gl-geocoder'
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css'
 import styled from 'styled-components'
 import Hero from './Hero'
+import Pin from './Pin'
+import Sidebar from './Sidebar'
 
 const MAPBOX_TOKEN =
   'pk.eyJ1Ijoic21peWFrYXdhIiwiYSI6ImNqcGM0d3U4bTB6dWwzcW04ZHRsbHl0ZWoifQ.X9cvdajtPbs9JDMG-CMDsA'
@@ -31,13 +33,45 @@ const Styling = styled.div`
 `
 
 class App extends Component {
-  state = {
-    viewport: {
-      latitude: 50.92,
-      longitude: 11.946,
-      zoom: 6,
-    },
-    searchResultLayer: null,
+  constructor(props) {
+    super(props)
+    this.state = {
+      viewport: {
+        latitude: 50.92,
+        longitude: 11.946,
+        zoom: 5,
+      },
+      selectedRetailerId: null,
+      hoveredRetailerId: null,
+
+      retailers: [
+        {
+          id: '1',
+          title: 'Test Berlin',
+          location: 'test',
+          description: 'test',
+          lng: 13.38885,
+          lat: 52.516949,
+        },
+        {
+          id: '2',
+          title: 'Test Berlin 2',
+          location: 'test',
+          description: 'test',
+          lng: 13.385832,
+          lat: 52.518114,
+        },
+        {
+          id: '3',
+          title: 'Test Berlin 3',
+          location: 'test',
+          description: 'test',
+          lng: 13.385635,
+          lat: 52.516776,
+        },
+      ],
+      filteredRetailerIds: [],
+    }
   }
 
   mapRef = React.createRef()
@@ -80,23 +114,104 @@ class App extends Component {
     })
   }
 
+  handleBoundsChange = throttle(
+    map => {
+      let bounds = map.getBounds()
+      const limitedBounds = map.unproject([60, 60])
+
+      const hDiff = Math.abs(bounds.getNorth() - limitedBounds.lat)
+      const vDiff = Math.abs(bounds.getWest() - limitedBounds.lng)
+
+      bounds = [
+        bounds.getSouth() + hDiff,
+        limitedBounds.lng,
+        limitedBounds.lat,
+        bounds.getEast() - vDiff,
+      ]
+
+      const { retailers } = this.state
+
+      console.log(bounds)
+
+      this.setState({
+        filteredRetailerIds: Object.keys(retailers).filter(k => {
+          const lat = retailers[k].lat
+          const lng = retailers[k].lng
+
+          return (
+            lat > bounds[0] &&
+            lng > bounds[1] &&
+            lat < bounds[2] &&
+            lng < bounds[3]
+          )
+        }),
+        bounds,
+      })
+    },
+    500,
+    { leading: true },
+  )
+
+  setRetailer = id => {
+    this.setState({ selectedRetailerId: id })
+  }
+  onMouseEnter = id => {
+    this.setState({ hoveredRetailerId: id })
+  }
+
+  onMouseLeave = () => {
+    this.setState({ hoveredRetailerId: null })
+  }
+
   handleOnResult = event => {
-    console.log(event.result)
-    this.setState({
-      searchResultLayer: new GeoJsonLayer({
-        id: 'search-result',
-        data: event.result.geometry,
-        getFillColor: [255, 0, 0, 128],
-        getRadius: 1000,
-        pointRadiusMinPixels: 10,
-        pointRadiusMaxPixels: 10,
-      }),
-    })
+    this.handleBoundsChange(this.mapRef.current.getMap())
+  }
+
+  renderMarker = (retailer, index) => {
+    const { lng, lat } = retailer
+    return (
+      <Marker
+        key={`retailer-${index.toString()}`}
+        longitude={lng}
+        latitude={lat}
+      >
+        <Pin
+          active={
+            retailer.id === this.state.selectedRetailerId ||
+            retailer.id === this.state.hoveredRetailerId
+          }
+          size={20}
+          onMouseEnter={() => this.onMouseEnter(retailer.id)}
+          onMouseLeave={() => this.onMouseLeave(null)}
+          onMarkerClick={() => this.setRetailer(retailer.id)}
+        />
+      </Marker>
+    )
   }
 
   render() {
-    const { viewport, searchResultLayer } = this.state
+    const { viewport } = this.state
+    /*     if (this.mapRef.current) {
+      console.log(
+        this.mapRef.current
+          .getMap()
+          .getBounds()
+          .getSouthWest(),
+      )
+      console.log(
+        this.mapRef.current
+          .getMap()
+          .getBounds()
+          .getNorthEast(),
+      )
 
+      console.log('============================getBounds')
+      console.log(this.mapRef.current.getMap().getBounds())
+
+      console.log(this.mapRef.current.getMap().unproject([60, 60]))
+    } */
+    console.log(this.state.filteredRetailerIds)
+    console.log(this.state)
     return (
       <Styling>
         <div className="search-container">
@@ -113,10 +228,12 @@ class App extends Component {
           onViewportChange={this.handleViewportChange}
           mapboxApiAccessToken={MAPBOX_TOKEN}
         >
+          {this.state.retailers.map((retailer, index) =>
+            this.renderMarker(retailer, index),
+          )}
           <Geocoder
             containerRef={this.geocoderRef}
             countries={'de'}
-            // bbox={[-122.30937, 37.84214, -122.23715, 37.89838]}
             placeholder={'Search for city, zip...'}
             mapRef={this.mapRef}
             onResult={this.handleOnResult}
@@ -127,7 +244,6 @@ class App extends Component {
             filter={item => {
               return item.place_type
                 .map(i => {
-                  console.log(i)
                   return [
                     'postcode',
                     'locality',
@@ -140,8 +256,18 @@ class App extends Component {
                 })
             }}
           />
-          <DeckGL {...viewport} layers={[searchResultLayer]} />
         </MapGL>
+        {this.state.filteredRetailerIds &&
+          this.state.filteredRetailerIds.length > 0 && (
+            <Sidebar
+              retailers={this.state.retailers.filter(rtl => {
+                return this.state.filteredRetailerIds.indexOf(rtl.id) > -1
+              })}
+              onMouseEnter={this.onMouseEnter}
+              onMouseLeave={this.onMouseLeave}
+              setRetailer={this.setRetailer}
+            />
+          )}
       </Styling>
     )
   }

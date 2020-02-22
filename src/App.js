@@ -106,7 +106,12 @@ class App extends Component {
   }
 
   handleGeocoderViewportChange = viewport => {
-    const geocoderDefaultOverrides = { transitionDuration: 1000, zoom: 14.5 }
+    const geocoderDefaultOverrides = {
+      transitionDuration: 1000,
+      onTransitionEnd: () =>
+        this.handleBoundsChange(this.mapRef.current.getMap()),
+      zoom: 14.5,
+    }
 
     return this.handleViewportChange({
       ...viewport,
@@ -163,9 +168,7 @@ class App extends Component {
     this.setState({ hoveredRetailerId: null })
   }
 
-  handleOnResult = event => {
-    this.handleBoundsChange(this.mapRef.current.getMap())
-  }
+  handleOnResult = event => {}
 
   renderMarker = (retailer, index) => {
     const { lng, lat } = retailer

@@ -12,7 +12,10 @@ const Styling = styled.aside`
   z-index: 2;
   left: 0;
   bottom: 0;
-  height: 10rem;
+  height: 12rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `
 
 const Sidebar = props => {

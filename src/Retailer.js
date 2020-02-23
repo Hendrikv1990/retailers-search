@@ -2,9 +2,10 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 
 const Styling = styled.div`
-  height: 100%;
+  height: 177px;
+
   border: 1px solid transparent;
-  flex: 1;
+  flex: 0 1 247px;
   cursor: pointer;
   transition: box-shadow 0.2s ease-in-out;
 

@@ -16,12 +16,20 @@ const MAPBOX_TOKEN =
 
 const Styling = styled.div`
   height: 100vh;
+  .counter-wrapper {
+    position: absolute;
+    bottom: 35%;
+    right: 10%;
+    z-index: 2;
+    text-transform: uppercase;
+    font-size
+  }
   .search-container {
     position: absolute;
     display: flex;
     flex-direction: column;
     z-index: 2;
-    bottom: 30%;
+    bottom: 35%;
     left: 10%;
     .hero-wrapper {
       flex: 1;
@@ -66,6 +74,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      searched: false,
       bounds: [],
       viewport: {
         latitude: 52.521576,
@@ -197,7 +206,9 @@ class App extends Component {
     this.setState({ hoveredRetailerId: null })
   }
 
-  handleOnResult = event => {}
+  handleOnResult = event => {
+    this.setState({ searched: true })
+  }
 
   renderMarker = (retailer, index) => {
     const { lng, lat } = retailer
@@ -247,10 +258,17 @@ class App extends Component {
       <Styling>
         <div className="search-container">
           <div className="hero-wrapper">
-            <Hero></Hero>
+            <Hero searched={this.state.searched}></Hero>
           </div>
+
           <div ref={this.geocoderRef} className="geocoder-container"></div>
         </div>
+        {this.state.searched && (
+          <div className="counter-wrapper">
+            {`${this.state.filteredRetailerIds.length} Ergebnisse`}
+          </div>
+        )}
+
         <MapGL
           ref={this.mapRef}
           {...viewport}

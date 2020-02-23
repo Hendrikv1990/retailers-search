@@ -8,7 +8,7 @@ const Styling = styled.div`
   align-items: flex-start;
   align-content: flex-start;
   flex-direction: row;
-  height: 100%;
+  justify-content: center;
 `
 
 const List = props => {

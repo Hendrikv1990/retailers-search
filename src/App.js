@@ -68,9 +68,9 @@ class App extends Component {
     this.state = {
       bounds: [],
       viewport: {
-        latitude: 50.92,
-        longitude: 11.946,
-        zoom: 5,
+        latitude: 52.521576,
+        longitude: 13.389523,
+        zoom: 16,
       },
       selectedRetailerId: null,
       hoveredRetailerId: null,
@@ -141,7 +141,7 @@ class App extends Component {
       transitionDuration: 1000,
       onTransitionEnd: () =>
         this.handleBoundsChange(this.mapRef.current.getMap()),
-      zoom: 14.5,
+      zoom: 15,
     }
 
     return this.handleViewportChange({
@@ -270,7 +270,7 @@ class App extends Component {
             onResult={this.handleOnResult}
             onViewportChange={this.handleGeocoderViewportChange}
             mapboxApiAccessToken={MAPBOX_TOKEN}
-            zoom={5.52}
+            zoom={2}
             proximity={{ longitude: 50.92, latitude: 11.946 }}
             filter={item => {
               return item.place_type

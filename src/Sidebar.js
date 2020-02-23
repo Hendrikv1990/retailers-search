@@ -5,7 +5,7 @@ import List from './List'
 const Styling = styled.aside`
   position: fixed;
   width: 100%;
-  z-index: 1000;
+  z-index: 2;
   left: 0;
   bottom: 0;
   height: 10rem;
@@ -15,7 +15,7 @@ const Styling = styled.aside`
 const Sidebar = props => {
   return (
     <Styling>
-      <List props={props} />
+      <List {...props} />
     </Styling>
   )
 }

@@ -2,8 +2,9 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 
 const Styling = styled.div`
+  height: 100%;
   border: 1px solid transparent;
-  flex: 0 1 100%;
+  flex: 1;
   cursor: pointer;
   transition: box-shadow 0.2s ease-in-out;
 
@@ -27,8 +28,7 @@ const Styling = styled.div`
   }
 
   .content-container {
-    font-size: 90%;
-    flex: 4;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: start;

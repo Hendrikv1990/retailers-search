@@ -28,6 +28,36 @@ const Styling = styled.div`
     }
     .geocoder-container {
       flex: 1;
+      .mapboxgl-ctrl-geocoder {
+        background: transparent;
+        border-radius: 0;
+        box-shadow: none;
+        border-bottom: 2px solid;
+        svg {
+          display: none;
+        }
+        input {
+          text-transform: uppercase;
+          font-weight: bold;
+          padding: 0;
+        }
+      }
+      .suggestions-wrapper {
+        ul {
+          background-color: transparent;
+          border-radius: 0;
+          box-shadow: none;
+          li {
+            &:active {
+            }
+            a {
+              background: transparent;
+              .mapboxgl-ctrl-geocoder--suggestion {
+              }
+            }
+          }
+        }
+      }
     }
   }
 `
@@ -36,6 +66,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      bounds: [],
       viewport: {
         latitude: 50.92,
         longitude: 11.946,
@@ -99,7 +130,7 @@ class App extends Component {
         ...this.state.viewport,
         ...viewport,
         transitionInterpolator: new FlyToInterpolator(),
-        transitionDuration: 3000,
+        transitionDuration: 2000,
         transitionEasing: Power3.easeInOut,
       },
     })
@@ -136,8 +167,6 @@ class App extends Component {
 
       const { retailers } = this.state
 
-      console.log(bounds)
-
       this.setState({
         filteredRetailerIds: Object.keys(retailers).filter(k => {
           const lat = retailers[k].lat
@@ -153,7 +182,7 @@ class App extends Component {
         bounds,
       })
     },
-    500,
+    100,
     { leading: true },
   )
 
@@ -213,8 +242,7 @@ class App extends Component {
 
       console.log(this.mapRef.current.getMap().unproject([60, 60]))
     } */
-    console.log(this.state.filteredRetailerIds)
-    console.log(this.state)
+
     return (
       <Styling>
         <div className="search-container">
@@ -266,6 +294,7 @@ class App extends Component {
               retailers={this.state.retailers.filter(rtl => {
                 return this.state.filteredRetailerIds.indexOf(rtl.id) > -1
               })}
+              selectedRetailerId={this.state.selectedRetailerId}
               onMouseEnter={this.onMouseEnter}
               onMouseLeave={this.onMouseLeave}
               setRetailer={this.setRetailer}

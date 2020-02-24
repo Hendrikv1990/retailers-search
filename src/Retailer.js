@@ -4,18 +4,14 @@ import { ReactComponent as ArrowSVG } from './assets/arrow.svg'
 
 const Styling = styled.div`
   height: 177px;
-
-  border: 1px solid transparent;
   flex: 0 1 247px;
   cursor: pointer;
-  transition: box-shadow 0.2s ease-in-out;
+  transition: color 0.2s ease-in-out;
 
   ${props =>
     props.active &&
     css`
-      background: #fff;
-      border: 1px solid #222;
-      border-radius: 2px;
+      color: #058273;
     `};
 
   display: flex;
@@ -23,9 +19,7 @@ const Styling = styled.div`
   align-items: center;
 
   &:hover {
-    background: #fff;
-    border: 1px solid #222;
-    border-radius: 2px;
+    color: #058273;
   }
 
   .content-container {
@@ -44,6 +38,10 @@ const Styling = styled.div`
         flex: 1;
       }
       .arrow-wrapper {
+        svg {
+          fill: ${props => (props.active ? '#058273' : '#222')};
+        }
+
         flex: 1;
       }
     }
@@ -55,7 +53,8 @@ const Styling = styled.div`
       font-style: normal;
       line-height: 1.5;
       letter-spacing: normal;
-      color: #55706c;
+
+      color: ${props => (props.active ? '#058273' : '#55706c')};
     }
     .content-location {
     }
@@ -72,7 +71,10 @@ const Retailer = ({
   onMouseEnter,
   hoveredRetailerId,
   selectedRetailerId,
-  retailer: { id, title, location, description },
+  retailer: {
+    id,
+    fields: { name, address, phone_number },
+  },
 }) => {
   return (
     <Styling
@@ -83,12 +85,14 @@ const Retailer = ({
     >
       <div className="content-container">
         <div className="content-header">
-          <h3>{title}</h3>
-          <ArrowSVG />
+          <h3>{name}</h3>
+          <div className="arrow-wrapper">
+            <ArrowSVG />
+          </div>
         </div>
 
-        <div className="content-main content-location">{location}</div>
-        <div className="content-main content-contact">{description}</div>
+        <div className="content-main content-location">{address}</div>
+        <div className="content-main content-contact">{phone_number}</div>
       </div>
     </Styling>
   )

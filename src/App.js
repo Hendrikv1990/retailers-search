@@ -87,6 +87,7 @@ class App extends Component {
     this.state = {
       searched: false,
       bounds: [],
+      retailers: [],
       viewport: {
         latitude: 52.521576,
         longitude: 13.389523,
@@ -164,18 +165,20 @@ class App extends Component {
 
       const { retailers } = this.state
 
-      this.setState({
-        filteredRetailerIds: Object.keys(retailers).filter(k => {
-          const lat = retailers[k].fields.long_lat.lat
-          const lng = retailers[k].fields.long_lat.lng
+      const filteredRetailers = retailers.filter(rtl => {
+        const lat = rtl.fields.long_lat.lat
+        const lng = rtl.fields.long_lat.lng
 
-          return (
-            lat > bounds[0] &&
-            lng > bounds[1] &&
-            lat < bounds[2] &&
-            lng < bounds[3]
-          )
-        }),
+        return (
+          lat > bounds[0] &&
+          lng > bounds[1] &&
+          lat < bounds[2] &&
+          lng < bounds[3]
+        )
+      })
+
+      this.setState({
+        filteredRetailerIds: filteredRetailers.map(rtl => rtl.id),
         bounds,
       })
     },
@@ -222,25 +225,6 @@ class App extends Component {
 
   render() {
     const { viewport } = this.state
-    /*     if (this.mapRef.current) {
-      console.log(
-        this.mapRef.current
-          .getMap()
-          .getBounds()
-          .getSouthWest(),
-      )
-      console.log(
-        this.mapRef.current
-          .getMap()
-          .getBounds()
-          .getNorthEast(),
-      )
-
-      console.log('============================getBounds')
-      console.log(this.mapRef.current.getMap().getBounds())
-
-      console.log(this.mapRef.current.getMap().unproject([60, 60]))
-    } */
 
     return (
       <React.Fragment>

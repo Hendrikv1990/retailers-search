@@ -3,11 +3,7 @@ import throttle from 'lodash.throttle'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import 'normalize.css'
 import React, { Component } from 'react'
-import MapGL, {
-  FlyToInterpolator,
-  Marker,
-  WebMercatorViewport,
-} from 'react-map-gl'
+import MapGL, { FlyToInterpolator, Marker } from 'react-map-gl'
 import Geocoder from 'react-map-gl-geocoder'
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css'
 import styled from 'styled-components'

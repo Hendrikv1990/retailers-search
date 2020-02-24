@@ -1,7 +1,11 @@
-import { Power3, TimelineLite } from 'gsap'
-import React, { useEffect } from 'react'
+import { gsap, Power3, TimelineLite } from 'gsap'
+import { CSSPlugin } from 'gsap/CSSPlugin'
+import React from 'react'
 import { Transition } from 'react-transition-group'
 import styled from 'styled-components'
+
+// Force CSSPlugin to not get dropped during build
+gsap.registerPlugin(CSSPlugin)
 
 const Styling = styled.div`
   width: 35rem;

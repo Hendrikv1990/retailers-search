@@ -1,7 +1,12 @@
 import { Power3, TimelineLite } from 'gsap'
+import { gsap } from 'gsap'
+import { CSSPlugin } from 'gsap/CSSPlugin'
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import List from './List'
+
+// Force CSSPlugin to not get dropped during build
+gsap.registerPlugin(CSSPlugin)
 
 const Styling = styled.aside`
   background-color: #fcfbf7;
@@ -23,11 +28,12 @@ const Sidebar = props => {
 
   useEffect(() => {
     const timeline = new TimelineLite()
-    timeline.to(wrapperRef.current, 0.3, {
+    timeline.to(wrapperRef.current, {
+      duration: 0.3,
       ease: Power3.easeInOut,
       autoAlpha: 1,
     })
-  }, [])
+  })
   return (
     <Styling ref={wrapperRef}>
       <List {...props} />

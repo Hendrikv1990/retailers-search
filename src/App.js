@@ -7,10 +7,11 @@ import MapGL, { FlyToInterpolator, Marker } from 'react-map-gl'
 import Geocoder from 'react-map-gl-geocoder'
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css'
 import styled from 'styled-components'
+import Api from './Api'
+import { GlobalStyle } from './assets/Styles'
 import Hero from './Hero'
 import Pin from './Pin'
 import Sidebar from './Sidebar'
-import { GlobalStyle } from './assets/Styles'
 
 const MAPBOX_TOKEN =
   'pk.eyJ1Ijoic21peWFrYXdhIiwiYSI6ImNqcGM0d3U4bTB6dWwzcW04ZHRsbHl0ZWoifQ.X9cvdajtPbs9JDMG-CMDsA'
@@ -94,32 +95,6 @@ class App extends Component {
       selectedRetailerId: null,
       hoveredRetailerId: null,
 
-      retailers: [
-        {
-          id: '1',
-          title: 'Test Berlin',
-          location: 'test',
-          description: 'test',
-          lng: 13.38885,
-          lat: 52.516949,
-        },
-        {
-          id: '2',
-          title: 'Test Berlin 2',
-          location: 'test',
-          description: 'test',
-          lng: 13.385832,
-          lat: 52.518114,
-        },
-        {
-          id: '3',
-          title: 'Test Berlin 3',
-          location: 'test',
-          description: 'test',
-          lng: 13.385635,
-          lat: 52.516776,
-        },
-      ],
       filteredRetailerIds: [],
     }
   }
@@ -130,6 +105,9 @@ class App extends Component {
   componentDidMount() {
     window.addEventListener('resize', this.resize)
     this.resize()
+
+    const retailers = Api.getRetailers()
+    this.setState({ retailers: retailers })
   }
 
   componentWillUnmount() {
@@ -188,8 +166,8 @@ class App extends Component {
 
       this.setState({
         filteredRetailerIds: Object.keys(retailers).filter(k => {
-          const lat = retailers[k].lat
-          const lng = retailers[k].lng
+          const lat = retailers[k].fields.long_lat.lat
+          const lng = retailers[k].fields.long_lat.lng
 
           return (
             lat > bounds[0] &&
@@ -221,7 +199,7 @@ class App extends Component {
   }
 
   renderMarker = (retailer, index) => {
-    const { lng, lat } = retailer
+    const { lng, lat } = retailer.fields.long_lat
     return (
       <Marker
         key={`retailer-${index.toString()}`}

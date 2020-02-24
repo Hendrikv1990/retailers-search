@@ -1,5 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
+import { ReactComponent as ArrowSVG } from './assets/arrow.svg'
 
 const Styling = styled.div`
   height: 177px;
@@ -20,7 +21,6 @@ const Styling = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 0 0 0.5rem 0;
 
   &:hover {
     background: #fff;
@@ -34,17 +34,30 @@ const Styling = styled.div`
     flex-direction: column;
     align-items: start;
     margin: 0.5rem;
-    height: 5rem;
+    height: 100%;
     overflow: hidden;
-    h3 {
-      font-size: 130%;
-      margin: 0;
+    .content-header {
+      display: flex;
+      align-items: baseline;
+      width: 100%;
+      h3 {
+        flex: 1;
+      }
+      .arrow-wrapper {
+        flex: 1;
+      }
+    }
+    .content-main {
+      flex: 1;
+      font-size: 14px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.5;
+      letter-spacing: normal;
+      color: #55706c;
     }
     .content-location {
-      margin: 0;
-      font-size: 85%;
-      color: #222
-      font-style: italic;
     }
     .content-description {
       margin-top: 1rem;
@@ -69,11 +82,14 @@ const Retailer = ({
       onClick={() => setRetailer(id)}
     >
       <div className="content-container">
-        <h3>{title}</h3>
-        <div className="content-location">{location}</div>
-        <div className="content-description">{description}</div>
+        <div className="content-header">
+          <h3>{title}</h3>
+          <ArrowSVG />
+        </div>
+
+        <div className="content-main content-location">{location}</div>
+        <div className="content-main content-contact">{description}</div>
       </div>
-      <footer />
     </Styling>
   )
 }

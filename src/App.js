@@ -10,6 +10,7 @@ import styled from 'styled-components'
 import Hero from './Hero'
 import Pin from './Pin'
 import Sidebar from './Sidebar'
+import { GlobalStyle } from './assets/Styles'
 
 const MAPBOX_TOKEN =
   'pk.eyJ1Ijoic21peWFrYXdhIiwiYSI6ImNqcGM0d3U4bTB6dWwzcW04ZHRsbHl0ZWoifQ.X9cvdajtPbs9JDMG-CMDsA'
@@ -41,13 +42,22 @@ const Styling = styled.div`
         border-radius: 0;
         box-shadow: none;
         border-bottom: 2px solid;
+            max-width: 360px;
+            width: auto;
         svg {
           display: none;
         }
         input {
+          width: auto;
           text-transform: uppercase;
-          font-weight: bold;
-          padding: 0;
+          font-family: BebasNeuePro;
+  font-size: 34px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  padding: 0;
         }
       }
       .suggestions-wrapper {
@@ -255,70 +265,73 @@ class App extends Component {
     } */
 
     return (
-      <Styling>
-        <div className="search-container">
-          <div className="hero-wrapper">
-            <Hero searched={this.state.searched}></Hero>
-          </div>
+      <React.Fragment>
+        <GlobalStyle />
+        <Styling>
+          <div className="search-container">
+            <div className="hero-wrapper">
+              <Hero searched={this.state.searched}></Hero>
+            </div>
 
-          <div ref={this.geocoderRef} className="geocoder-container"></div>
-        </div>
-        {this.state.searched && (
-          <div className="counter-wrapper">
-            {`${this.state.filteredRetailerIds.length} Ergebnisse`}
+            <div ref={this.geocoderRef} className="geocoder-container"></div>
           </div>
-        )}
-
-        <MapGL
-          ref={this.mapRef}
-          {...viewport}
-          width="100%"
-          height="100%"
-          onViewportChange={this.handleViewportChange}
-          mapboxApiAccessToken={MAPBOX_TOKEN}
-        >
-          {this.state.retailers.map((retailer, index) =>
-            this.renderMarker(retailer, index),
+          {this.state.searched && (
+            <div className="counter-wrapper">
+              {`${this.state.filteredRetailerIds.length} Ergebnisse`}
+            </div>
           )}
-          <Geocoder
-            containerRef={this.geocoderRef}
-            countries={'de'}
-            placeholder={'Search for city, zip...'}
-            mapRef={this.mapRef}
-            onResult={this.handleOnResult}
-            onViewportChange={this.handleGeocoderViewportChange}
+
+          <MapGL
+            ref={this.mapRef}
+            {...viewport}
+            width="100%"
+            height="100%"
+            onViewportChange={this.handleViewportChange}
             mapboxApiAccessToken={MAPBOX_TOKEN}
-            zoom={2}
-            proximity={{ longitude: 50.92, latitude: 11.946 }}
-            filter={item => {
-              return item.place_type
-                .map(i => {
-                  return [
-                    'postcode',
-                    'locality',
-                    'region',
-                    'district',
-                  ].includes(i)
-                })
-                .reduce((acc, cur) => {
-                  return acc || cur
-                })
-            }}
-          />
-        </MapGL>
-        {this.state.filteredRetailerIds &&
-          this.state.filteredRetailerIds.length > 0 && (
-            <Sidebar
-              retailers={this.state.retailers.filter(rtl => {
-                return this.state.filteredRetailerIds.indexOf(rtl.id) > -1
-              })}
-              selectedRetailerId={this.state.selectedRetailerId}
-              onMouseEnter={this.onMouseEnter}
-              onMouseLeave={this.onMouseLeave}
-              setRetailer={this.setRetailer}
+          >
+            {this.state.retailers.map((retailer, index) =>
+              this.renderMarker(retailer, index),
+            )}
+            <Geocoder
+              containerRef={this.geocoderRef}
+              countries={'de'}
+              placeholder={'Search for city, zip...'}
+              mapRef={this.mapRef}
+              onResult={this.handleOnResult}
+              onViewportChange={this.handleGeocoderViewportChange}
+              mapboxApiAccessToken={MAPBOX_TOKEN}
+              zoom={2}
+              proximity={{ longitude: 50.92, latitude: 11.946 }}
+              filter={item => {
+                return item.place_type
+                  .map(i => {
+                    return [
+                      'postcode',
+                      'locality',
+                      'region',
+                      'district',
+                    ].includes(i)
+                  })
+                  .reduce((acc, cur) => {
+                    return acc || cur
+                  })
+              }}
             />
-          )}
-      </Styling>
+          </MapGL>
+          {this.state.filteredRetailerIds &&
+            this.state.filteredRetailerIds.length > 0 && (
+              <Sidebar
+                retailers={this.state.retailers.filter(rtl => {
+                  return this.state.filteredRetailerIds.indexOf(rtl.id) > -1
+                })}
+                selectedRetailerId={this.state.selectedRetailerId}
+                onMouseEnter={this.onMouseEnter}
+                onMouseLeave={this.onMouseLeave}
+                setRetailer={this.setRetailer}
+              />
+            )}
+        </Styling>
+      </React.Fragment>
     )
   }
 }

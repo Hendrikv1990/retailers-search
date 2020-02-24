@@ -24,7 +24,15 @@ const Styling = styled.div`
     right: 10%;
     z-index: 2;
     text-transform: uppercase;
-    font-size
+
+    font-family: BebasNeuePro;
+    font-size: 34px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: right;
   }
   .search-container {
     position: absolute;
@@ -43,8 +51,8 @@ const Styling = styled.div`
         border-radius: 0;
         box-shadow: none;
         border-bottom: 2px solid;
-            max-width: 360px;
-            width: auto;
+        max-width: 360px;
+        width: auto;
         svg {
           display: none;
         }
@@ -52,13 +60,13 @@ const Styling = styled.div`
           width: auto;
           text-transform: uppercase;
           font-family: BebasNeuePro;
-  font-size: 34px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  padding: 0;
+          font-size: 34px;
+          font-weight: bold;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: normal;
+          letter-spacing: normal;
+          padding: 0;
         }
       }
       .suggestions-wrapper {

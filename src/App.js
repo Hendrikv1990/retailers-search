@@ -271,7 +271,7 @@ class App extends Component {
               onViewportChange={this.handleGeocoderViewportChange}
               mapboxApiAccessToken={MAPBOX_TOKEN}
               zoom={2}
-              proximity={{ longitude: 50.92, latitude: 11.946 }}
+              // proximity={{ longitude: 50.92, latitude: 11.946 }}
               filter={item => {
                 return item.place_type
                   .map(i => {

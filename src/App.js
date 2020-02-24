@@ -124,10 +124,16 @@ class App extends Component {
     window.removeEventListener('resize', this.resize)
   }
 
+  calculateMapHeight = () => {
+    return this.state.filteredRetailerIds.length > 0
+      ? window.innerHeight - 192
+      : window.innerHeight
+  }
+
   resize = () => {
     this.handleViewportChange({
       width: window.innerWidth,
-      height: window.innerHeight,
+      height: this.calculateMapHeight(),
     })
   }
 
@@ -256,7 +262,7 @@ class App extends Component {
             ref={this.mapRef}
             {...viewport}
             width="100%"
-            height="100%"
+            height={this.calculateMapHeight()}
             onViewportChange={this.handleViewportChange}
             mapboxApiAccessToken={MAPBOX_TOKEN}
           >

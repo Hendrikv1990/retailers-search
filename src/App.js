@@ -94,6 +94,7 @@ class App extends Component {
     super(props)
     this.state = {
       searched: false,
+      zoom: 14,
       bounds: [],
       retailers: [],
       viewport: {
@@ -145,9 +146,10 @@ class App extends Component {
   handleGeocoderViewportChange = viewport => {
     const geocoderDefaultOverrides = {
       transitionDuration: 1000,
-      onTransitionEnd: () =>
-        this.handleBoundsChange(this.mapRef.current.getMap()),
-      zoom: 14,
+      onTransitionEnd: () => {
+        this.handleBoundsChange(this.mapRef.current.getMap())
+      },
+      zoom: this.state.zoom,
     }
 
     return this.handleViewportChange({
@@ -206,6 +208,10 @@ class App extends Component {
   }
 
   handleOnResult = event => {
+    const { place_type } = event.result
+    if (place_type[0] === 'city' || place_type[0] === 'region') {
+      this.setState({ zoom: 9 })
+    }
     this.setState({ searched: true })
   }
 

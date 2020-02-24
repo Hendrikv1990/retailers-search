@@ -147,7 +147,7 @@ class App extends Component {
       transitionDuration: 1000,
       onTransitionEnd: () =>
         this.handleBoundsChange(this.mapRef.current.getMap()),
-      zoom: 15,
+      zoom: 14,
     }
 
     return this.handleViewportChange({
@@ -265,17 +265,16 @@ class App extends Component {
             <Geocoder
               containerRef={this.geocoderRef}
               countries={'de'}
-              placeholder={'Search for city, zip...'}
+              placeholder={'Land, Stadt, PLZ'}
               mapRef={this.mapRef}
               onResult={this.handleOnResult}
               onViewportChange={this.handleGeocoderViewportChange}
               mapboxApiAccessToken={MAPBOX_TOKEN}
-              zoom={2}
-              // proximity={{ longitude: 50.92, latitude: 11.946 }}
               filter={item => {
                 return item.place_type
                   .map(i => {
                     return [
+                      'city',
                       'postcode',
                       'locality',
                       'region',

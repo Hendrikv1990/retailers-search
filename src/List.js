@@ -13,9 +13,11 @@ const Styling = styled.div`
 
 const List = props => {
   const { retailers } = props
+  console.log(retailers)
+
   return (
     <Styling>
-      {retailers &&
+      {retailers && retailers.length > 0 ? (
         retailers.map(retailer => {
           return (
             <Retailer
@@ -24,7 +26,10 @@ const List = props => {
               retailer={retailer}
             />
           )
-        })}
+        })
+      ) : (
+        <div>No retailers found in this area.</div>
+      )}
     </Styling>
   )
 }

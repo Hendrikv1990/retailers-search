@@ -1,4 +1,5 @@
-import { Power3 } from 'gsap'
+import { gsap, Power3, TimelineLite } from 'gsap'
+import { CSSPlugin } from 'gsap/CSSPlugin'
 import throttle from 'lodash.throttle'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import 'normalize.css'
@@ -11,36 +12,25 @@ import Api from './Api'
 import { GlobalStyle } from './assets/Styles'
 import Hero from './Hero'
 import Pin from './Pin'
+import RetailersCounter from './RetailersCounter'
 import Sidebar from './Sidebar'
+
+// Force CSSPlugin to not get dropped during build
+gsap.registerPlugin(CSSPlugin)
 
 const MAPBOX_TOKEN =
   'pk.eyJ1Ijoic21peWFrYXdhIiwiYSI6ImNqcGM0d3U4bTB6dWwzcW04ZHRsbHl0ZWoifQ.X9cvdajtPbs9JDMG-CMDsA'
 
 const Styling = styled.div`
   height: 100vh;
-  .counter-wrapper {
-    position: absolute;
-    bottom: 35%;
-    right: 10%;
-    z-index: 2;
-    text-transform: uppercase;
 
-    font-family: BebasNeuePro;
-    font-size: 34px;
-    font-weight: bold;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    text-align: right;
-  }
   .search-container {
     position: absolute;
     display: flex;
     flex-direction: column;
     z-index: 2;
-    bottom: 35%;
-    left: 10%;
+    bottom: 10%;
+    left: 5%;
     .hero-wrapper {
       flex: 1;
     }
@@ -105,10 +95,10 @@ class App extends Component {
       selectedRetailerId: null,
       hoveredRetailerId: null,
 
-      filteredRetailerIds: [],
+      filteredRetailerIds: null,
     }
   }
-
+  searchRef = React.createRef()
   mapRef = React.createRef()
   geocoderRef = React.createRef()
 
@@ -125,7 +115,7 @@ class App extends Component {
   }
 
   calculateMapHeight = () => {
-    return this.state.filteredRetailerIds.length > 0
+    return this.state.filteredRetailerIds
       ? window.innerHeight - 192
       : window.innerHeight
   }
@@ -150,6 +140,16 @@ class App extends Component {
   }
 
   handleGeocoderViewportChange = viewport => {
+    const timeline = new TimelineLite()
+    timeline.to(
+      this.searchRef.current,
+      {
+        duration: 1,
+        ease: Power3.easeInOut,
+        bottom: '85%',
+      },
+      '+=1',
+    )
     const geocoderDefaultOverrides = {
       transitionDuration: 1000,
       onTransitionEnd: () => {
@@ -245,17 +245,16 @@ class App extends Component {
       <React.Fragment>
         <GlobalStyle />
         <Styling>
-          <div className="search-container">
+          <div ref={this.searchRef} className="search-container">
             <div className="hero-wrapper">
               <Hero searched={this.state.searched}></Hero>
             </div>
 
             <div ref={this.geocoderRef} className="geocoder-container"></div>
           </div>
-          {this.state.searched && (
-            <div className="counter-wrapper">
-              {`${this.state.filteredRetailerIds.length} Ergebnisse`}
-            </div>
+
+          {this.state.searched && this.state.filteredRetailerIds && (
+            <RetailersCounter count={this.state.filteredRetailerIds.length} />
           )}
 
           <MapGL
@@ -294,18 +293,17 @@ class App extends Component {
               }}
             />
           </MapGL>
-          {this.state.filteredRetailerIds &&
-            this.state.filteredRetailerIds.length > 0 && (
-              <Sidebar
-                retailers={this.state.retailers.filter(rtl => {
-                  return this.state.filteredRetailerIds.indexOf(rtl.id) > -1
-                })}
-                selectedRetailerId={this.state.selectedRetailerId}
-                onMouseEnter={this.onMouseEnter}
-                onMouseLeave={this.onMouseLeave}
-                setRetailer={this.setRetailer}
-              />
-            )}
+          {this.state.filteredRetailerIds && (
+            <Sidebar
+              retailers={this.state.retailers.filter(rtl => {
+                return this.state.filteredRetailerIds.indexOf(rtl.id) > -1
+              })}
+              selectedRetailerId={this.state.selectedRetailerId}
+              onMouseEnter={this.onMouseEnter}
+              onMouseLeave={this.onMouseLeave}
+              setRetailer={this.setRetailer}
+            />
+          )}
         </Styling>
       </React.Fragment>
     )

@@ -10,6 +10,7 @@ const Styling = styled.div`
   flex-direction: row;
   justify-content: center;
   flex-wrap: nowrap;
+  overflow: scroll;
 `
 
 const List = props => {

@@ -9,6 +9,7 @@ const Styling = styled.div`
   align-content: flex-start;
   flex-direction: row;
   justify-content: center;
+  flex-wrap: nowrap;
 `
 
 const List = props => {

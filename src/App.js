@@ -203,6 +203,12 @@ class App extends Component {
 
   setRetailer = id => {
     this.setState({ selectedRetailerId: id })
+
+    const { lat, lng } = this.state.retailers.find(
+      x => x.id === id,
+    ).fields.long_lat
+
+    this.handleViewportChange({ latitude: lat, longitude: lng, zoom: 16 })
   }
   onMouseEnter = id => {
     this.setState({ hoveredRetailerId: id })

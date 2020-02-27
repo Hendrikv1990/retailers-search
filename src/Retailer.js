@@ -4,7 +4,7 @@ import { ReactComponent as ArrowSVG } from './assets/arrow.svg'
 
 const Styling = styled.div`
   height: 177px;
-  flex: 0 1 247px;
+  flex: 1 247px;
   cursor: pointer;
   transition: color 0.2s ease-in-out;
 

@@ -15,7 +15,6 @@ const Styling = styled.div`
 
 const List = props => {
   const { retailers } = props
-  console.log(retailers)
 
   return (
     <Styling>

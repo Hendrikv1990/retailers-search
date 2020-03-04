@@ -17,7 +17,7 @@ export const GlobalStyle = createGlobalStyle`
 
   * { box-sizing: border-box; }
   body {
-    font-family: 'BebasNeuePro', 'Helvetica Neue', Arial, Helvetica, Verdana,
+    font-family: 'Bebas Neue Pro', 'Helvetica Neue', Arial, Helvetica, Verdana,
       sans-serif;
     color: #222;
     letter-spacing: 0.2px;
@@ -26,18 +26,14 @@ export const GlobalStyle = createGlobalStyle`
 	   -moz-osx-font-smoothing: grayscale;
      text-rendering: optimizeLegibility;
      @media ${device.tablet} {
-     
       }
       
         h1 {
-          font-family: 'BebasNeuePro';
+          font-family: 'Bebas Neue Pro';
           text-transform: uppercase;
   font-size: 96px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
+
   line-height: 0.9;
-  letter-spacing: normal;
   color: #00140f;
       }
       p {

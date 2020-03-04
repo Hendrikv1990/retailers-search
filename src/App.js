@@ -49,7 +49,7 @@ const Styling = styled.div`
         input {
           width: auto;
           text-transform: uppercase;
-          font-family: BebasNeuePro;
+          font-family: 'Bebas Neue Pro';
           font-size: 34px;
           font-weight: bold;
           font-stretch: normal;

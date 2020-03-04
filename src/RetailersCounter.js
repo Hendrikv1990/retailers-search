@@ -14,13 +14,8 @@ const Styling = styled.aside`
   right: 5%;
   z-index: 2;
   text-transform: uppercase;
-  font-family: BebasNeuePro;
+  font-family: 'Bebas Neue Pro';
   font-size: 34px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: normal;
   text-align: right;
 `
 

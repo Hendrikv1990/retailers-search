@@ -29,7 +29,7 @@ const Styling = styled.div`
     display: flex;
     flex-direction: column;
     z-index: 2;
-    bottom: 10%;
+    bottom: 25%;
     left: 5%;
     .hero-wrapper {
       flex: 1;
@@ -65,11 +65,22 @@ const Styling = styled.div`
           border-radius: 0;
           box-shadow: none;
           li {
+            text-transform: uppercase;
+            font-family: 'Bebas Neue Pro';
+            font-size: 20px;
+            line-height: 18px;
+            font-weight: bold;
             &:active {
             }
             a {
               background: transparent;
               .mapboxgl-ctrl-geocoder--suggestion {
+                .mapboxgl-ctrl-geocoder--suggestion-title {
+                  display: inline-block;
+                }
+                .mapboxgl-ctrl-geocoder--suggestion-address {
+                  display: inline-block;
+                }
               }
             }
           }
@@ -278,6 +289,7 @@ class App extends Component {
               containerRef={this.geocoderRef}
               countries={'de'}
               placeholder={'Land, Stadt, PLZ'}
+              language="en"
               mapRef={this.mapRef}
               onResult={this.handleOnResult}
               onViewportChange={this.handleGeocoderViewportChange}

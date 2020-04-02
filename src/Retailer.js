@@ -4,7 +4,7 @@ import { ReactComponent as ArrowSVG } from './assets/arrow.svg'
 
 const Styling = styled.div`
   height: 177px;
-  flex: 1 247px;
+  flex: 0 1 247px;
   cursor: pointer;
   transition: color 0.2s ease-in-out;
 
@@ -73,7 +73,7 @@ const Retailer = ({
   selectedRetailerId,
   retailer: {
     id,
-    fields: { name, address, phone_number },
+    fields: { name, address, phone_number, email },
   },
 }) => {
   return (
@@ -93,6 +93,7 @@ const Retailer = ({
 
         <div className="content-main content-location">{address}</div>
         <div className="content-main content-contact">{phone_number}</div>
+        <div className="content-main content-email">{email}</div>
       </div>
     </Styling>
   )

@@ -45,7 +45,7 @@ const Styling = styled.div`
     .geocoder-container {
       flex: 1;
       .mapboxgl-ctrl-geocoder {
-        &:after {
+        /* &:after {
           content: '';
           position: absolute;
 
@@ -59,7 +59,7 @@ const Styling = styled.div`
             rgba(240, 244, 245, 0),
             rgba(240, 244, 245, 1)
           );
-        }
+        } */
         background: transparent;
         border-radius: 0;
         box-shadow: none;

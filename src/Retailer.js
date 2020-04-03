@@ -1,13 +1,17 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 import { ReactComponent as ArrowSVG } from './assets/arrow.svg'
+import { device } from './assets/Styles'
 
 const Styling = styled.div`
   height: 177px;
   flex: 0 1 247px;
   cursor: pointer;
   transition: color 0.2s ease-in-out;
-
+  @media ${device.tablet} {
+    flex: 0 1 100%;
+    width: 100%;
+  }
   ${props =>
     props.active &&
     css`
@@ -38,6 +42,9 @@ const Styling = styled.div`
         flex: 1;
       }
       .arrow-wrapper {
+        @media ${device.tablet} {
+          text-align: end;
+        }
         svg {
           fill: ${props => (props.active ? '#058273' : '#222')};
         }

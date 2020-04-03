@@ -10,7 +10,7 @@ const Styling = styled.aside`
   position: absolute;
   opacity: 0;
   visibility: hidden;
-  bottom: 40%;
+  bottom: 10%;
   right: 5%;
   z-index: 2;
   text-transform: uppercase;

@@ -9,7 +9,7 @@ import Geocoder from 'react-map-gl-geocoder'
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css'
 import styled from 'styled-components'
 import Api from './Api'
-import { GlobalStyle } from './assets/Styles'
+import { device, GlobalStyle } from './assets/Styles'
 import Hero from './Hero'
 import Pin from './Pin'
 import RetailersCounter from './RetailersCounter'
@@ -29,14 +29,37 @@ const Styling = styled.div`
     display: flex;
     flex-direction: column;
     z-index: 2;
-    bottom: 10%;
+    bottom: 25%;
     left: 5%;
+
+    @media ${device.tablet} {
+      bottom: 0;
+      top: 15%;
+      left: 0;
+      margin: 1.5rem;
+    }
+
     .hero-wrapper {
       flex: 1;
     }
     .geocoder-container {
       flex: 1;
       .mapboxgl-ctrl-geocoder {
+        /* &:after {
+          content: '';
+          position: absolute;
+
+          left: 200px;
+          margin-left: -40px;
+          width: 40px;
+          height: 100%;
+          top: 0;
+          background: linear-gradient(
+            to right,
+            rgba(240, 244, 245, 0),
+            rgba(240, 244, 245, 1)
+          );
+        } */
         background: transparent;
         border-radius: 0;
         box-shadow: none;
@@ -57,6 +80,10 @@ const Styling = styled.div`
           line-height: normal;
           letter-spacing: normal;
           padding: 0;
+          overflow: hidden;
+          max-width: 300px;
+          position: relative;
+          white-space: nowrap;
         }
       }
       .suggestions-wrapper {
@@ -65,11 +92,27 @@ const Styling = styled.div`
           border-radius: 0;
           box-shadow: none;
           li {
+            text-transform: uppercase;
+            font-family: 'Bebas Neue Pro';
+            font-size: 20px;
+            line-height: 18px;
+            font-weight: bold;
             &:active {
+              color: #058273;
             }
             a {
+              animation: all 0.2 ease-in-out;
+              &:hover {
+                color: #058273;
+              }
               background: transparent;
               .mapboxgl-ctrl-geocoder--suggestion {
+                .mapboxgl-ctrl-geocoder--suggestion-title {
+                  display: inline-block;
+                }
+                .mapboxgl-ctrl-geocoder--suggestion-address {
+                  display: inline-block;
+                }
               }
             }
           }
@@ -259,10 +302,6 @@ class App extends Component {
             <div ref={this.geocoderRef} className="geocoder-container"></div>
           </div>
 
-          {this.state.searched && this.state.filteredRetailerIds && (
-            <RetailersCounter count={this.state.filteredRetailerIds.length} />
-          )}
-
           <MapGL
             ref={this.mapRef}
             {...viewport}
@@ -278,6 +317,7 @@ class App extends Component {
               containerRef={this.geocoderRef}
               countries={'de'}
               placeholder={'Land, Stadt, PLZ'}
+              language="en"
               mapRef={this.mapRef}
               onResult={this.handleOnResult}
               onViewportChange={this.handleGeocoderViewportChange}
@@ -298,6 +338,9 @@ class App extends Component {
                   })
               }}
             />
+            {this.state.searched && this.state.filteredRetailerIds && (
+              <RetailersCounter count={this.state.filteredRetailerIds.length} />
+            )}
           </MapGL>
           {this.state.filteredRetailerIds && (
             <Sidebar

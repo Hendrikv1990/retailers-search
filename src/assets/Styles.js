@@ -31,13 +31,13 @@ export const GlobalStyle = createGlobalStyle`
         h1 {
           font-family: 'Bebas Neue Pro';
           text-transform: uppercase;
-  font-size: 96px;
-
-  line-height: 0.9;
-  color: #00140f;
-      }
+            font-size: 96px;
+            margin: 0;
+            line-height: 0.9;
+            color: #00140f;
+       }
       p {
-  font-family: 'ArchivoNarrow';
+  font-family: 'Archivo Narrow';
   font-size: 14px;
   font-weight: normal;
   font-stretch: normal;
@@ -49,8 +49,6 @@ export const GlobalStyle = createGlobalStyle`
       }
 
       
-
- 
   }
      
 `

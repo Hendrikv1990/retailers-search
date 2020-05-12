@@ -4,6 +4,7 @@ import { CSSPlugin } from 'gsap/CSSPlugin'
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import List from './List'
+import { device } from './assets/Styles'
 
 // Force CSSPlugin to not get dropped during build
 gsap.registerPlugin(CSSPlugin)
@@ -12,7 +13,7 @@ const Styling = styled.aside`
   background-color: #fcfbf7;
   opacity: 0;
   visibility: hidden;
-  position: fixed;
+  position: relative;
   width: 100%;
   z-index: 2;
   left: 0;
@@ -21,6 +22,11 @@ const Styling = styled.aside`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  @media ${device.tablet} {
+    height: auto;
+    position: relative;
+    justify-content: flex-start;
+  }
 `
 
 const Sidebar = props => {

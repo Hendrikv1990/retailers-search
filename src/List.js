@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Retailer from './Retailer'
+import { device } from './assets/Styles'
 
 const Styling = styled.div`
   display: flex;
@@ -11,6 +12,10 @@ const Styling = styled.div`
   justify-content: center;
   flex-wrap: nowrap;
   overflow: scroll;
+  @media ${device.tablet} {
+    overflow: scroll;
+    flex-direction: column;
+  }
 `
 
 const List = props => {

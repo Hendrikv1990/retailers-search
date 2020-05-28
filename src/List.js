@@ -9,7 +9,7 @@ const Styling = styled.div`
   align-items: flex-start;
   align-content: flex-start;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: nowrap;
   overflow: scroll;
   @media ${device.tablet} {
@@ -18,13 +18,13 @@ const Styling = styled.div`
   }
 `
 
-const List = props => {
+const List = (props) => {
   const { retailers } = props
 
   return (
     <Styling>
       {retailers && retailers.length > 0 ? (
-        retailers.map(retailer => {
+        retailers.map((retailer) => {
           return (
             <Retailer
               {...props}

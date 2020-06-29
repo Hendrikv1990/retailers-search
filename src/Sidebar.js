@@ -29,7 +29,7 @@ const Styling = styled.aside`
   }
 `
 
-const Sidebar = props => {
+const Sidebar = (props) => {
   const wrapperRef = React.useRef()
 
   useEffect(() => {

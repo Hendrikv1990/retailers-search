@@ -11,6 +11,9 @@ const Styling = styled.div`
     width: 35px;
     position: absolute;
     transition: all 0.5s ease-in-out;
+    @media only screen and (max-width:1023px){
+    width: 25px;
+    }
     path {
       transition: stroke 0.2s ease-in-out;
       stroke: ${props => (props.active ? '#058273' : '#00140f')};

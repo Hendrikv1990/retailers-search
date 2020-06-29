@@ -23,12 +23,7 @@ const MAPBOX_TOKEN =
 
 const Styling = styled.div`
   height: 100vh;
-  .mapboxgl-map {
-    opacity:50%;
-    &.activated {
-      opacity:100%;
-    }
-  }
+ 
   .search-container {
     position: absolute;
     display: flex;
@@ -48,7 +43,17 @@ const Styling = styled.div`
       flex: 1;
     }
     .mapboxgl-ctrl-geocoder--icon-search {
-    
+    display:block!important;
+      background-image:url(../wp-content/themes/tomhemps/src/icons/Arrow_Dark.svg);
+      background-size:auto;
+      width:60px;
+      height:20px;
+      right:0;
+      left:unset!important;
+      background-repeat:no-repeat;
+      path {
+      display:none;
+      }
     }
     .geocoder-container {
       flex: 1;
@@ -134,6 +139,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      mapOpacity: "0.5",
       searched: false,
       zoom: 14,
       bounds: [],
@@ -274,7 +280,7 @@ class App extends Component {
   }
 
   handleOnResult = event => {
-    this.setState({ searched: true })
+    this.setState({ searched: true, mapOpacity: "1" })
   }
 
 
@@ -301,7 +307,7 @@ class App extends Component {
   }
 
   render() {
-    const { viewport } = this.state
+    const { viewport, mapOpacity } = this.state
 
     return (
       <React.Fragment>
@@ -316,13 +322,13 @@ class App extends Component {
           </div>
 
           <MapGL
+            style={{ opacity: mapOpacity }}
             ref={this.mapRef}
             {...viewport}
             width="100%"
             height={this.calculateMapHeight()}
             onViewportChange={this.handleViewportChange}
             mapboxApiAccessToken={MAPBOX_TOKEN}
-
           >
             {this.state.retailers.map((retailer, index) =>
               this.renderMarker(retailer, index),
@@ -331,7 +337,7 @@ class App extends Component {
               containerRef={this.geocoderRef}
               countries={'de'}
               placeholder={'Land, Stadt, PLZ'}
-              language="en"
+              language="de"
               mapRef={this.mapRef}
               onMouseEnter={this.increaseOpacity}
               onResult={this.handleOnResult}
@@ -341,10 +347,10 @@ class App extends Component {
                 return item.place_type
                   .map(i => {
                     return [
+                      'place',
                       'city',
                       'postcode',
                       'locality',
-                      'region',
                       'district',
                     ].includes(i)
                   })

@@ -23,7 +23,12 @@ const MAPBOX_TOKEN =
 
 const Styling = styled.div`
   height: 100vh;
-
+  .mapboxgl-map {
+    opacity:50%;
+    &.activated {
+      opacity:100%;
+    }
+  }
   .search-container {
     position: absolute;
     display: flex;
@@ -41,6 +46,9 @@ const Styling = styled.div`
 
     .hero-wrapper {
       flex: 1;
+    }
+    .mapboxgl-ctrl-geocoder--icon-search {
+    
     }
     .geocoder-container {
       flex: 1;
@@ -257,6 +265,10 @@ class App extends Component {
     this.setState({ hoveredRetailerId: id })
   }
 
+  increaseOpacity = event => {
+    document.getElementsByClassName("mapboxgl-map")[0].classList.add("activated");
+  }
+
   onMouseLeave = () => {
     this.setState({ hoveredRetailerId: null })
   }
@@ -264,6 +276,7 @@ class App extends Component {
   handleOnResult = event => {
     this.setState({ searched: true })
   }
+
 
   renderMarker = (retailer, index) => {
     const { lng, lat } = retailer.fields.long_lat
@@ -299,7 +312,7 @@ class App extends Component {
               <Hero searched={this.state.searched}></Hero>
             </div>
 
-            <div ref={this.geocoderRef} className="geocoder-container"></div>
+            <div ref={this.geocoderRef} className="geocoder-container container"></div>
           </div>
 
           <MapGL
@@ -309,6 +322,7 @@ class App extends Component {
             height={this.calculateMapHeight()}
             onViewportChange={this.handleViewportChange}
             mapboxApiAccessToken={MAPBOX_TOKEN}
+
           >
             {this.state.retailers.map((retailer, index) =>
               this.renderMarker(retailer, index),
@@ -319,6 +333,7 @@ class App extends Component {
               placeholder={'Land, Stadt, PLZ'}
               language="en"
               mapRef={this.mapRef}
+              onMouseEnter={this.increaseOpacity}
               onResult={this.handleOnResult}
               onViewportChange={this.handleGeocoderViewportChange}
               mapboxApiAccessToken={MAPBOX_TOKEN}

@@ -47,8 +47,48 @@ export const GlobalStyle = createGlobalStyle`
   color: #55706c;
 
       }
+      
+      h2 {
+       color: #00140f;
+      }
 
       
   }
+  .geocoder-container {
+  .mapboxgl-ctrl-geocoder  {
+  input {
+  max-width:80%!important;
+  }
+  }
+  }
+  
+   .no-results {
+    padding:20px 20px;
+   }
+   a.mapboxgl-ctrl-logo {
+   display:none!important;
+   }
+   .mapboxgl-ctrl-geocoder--suggestion-title {
+      padding-right:2px;
+   }
+   .mapboxgl-ctrl-geocoder .suggestions>li>a {
+   padding-left: 0;
+   }
+  @media only screen and (max-width:1023px){
+    .search-container {
+    
+    .geocoder-container {
+    position: absolute;
+    bottom: 0;
+    }
+    }
+    
+    .no-results {
+  margin-top: 50px;
+    padding:20px 20px;
+  }
+  }
+  
+  
      
 `

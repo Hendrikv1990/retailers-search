@@ -10,13 +10,20 @@ const Styling = styled.aside`
   position: absolute;
   opacity: 0;
   visibility: hidden;
-  bottom: 10%;
+  bottom: 30%;
   right: 5%;
   z-index: 2;
   text-transform: uppercase;
   font-family: 'Bebas Neue Pro';
   font-size: 34px;
   text-align: right;
+  @media only screen and (max-width:1023px){
+    display: none;
+    opacity:0;
+    bottom: 18%;
+    text-align: left;
+    left: 20px;  
+  }
 `
 
 const RetailersCounter = ({ count }) => {

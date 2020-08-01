@@ -4,7 +4,7 @@ import throttle from 'lodash.throttle'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import 'normalize.css'
 import React, { Component } from 'react'
-import MapGL, { FlyToInterpolator, Marker } from 'react-map-gl'
+import MapGL, { FlyToInterpolator, NavigationControl, Marker } from 'react-map-gl'
 import Geocoder from 'react-map-gl-geocoder'
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css'
 import styled from 'styled-components'
@@ -23,7 +23,14 @@ const MAPBOX_TOKEN =
 
 const Styling = styled.div`
   height: 100vh;
- 
+  .mapboxgl-ctrl-group {
+  bottom: 20%;
+    right: 5%;
+    position: absolute;
+    @media only screen and (max-width:768px){
+        bottom: 55%;
+    }
+  }
   .search-container {
     position: absolute;
     display: flex;
@@ -31,8 +38,10 @@ const Styling = styled.div`
     z-index: 2;
     bottom: 25%;
     left: 5%;
+        width: 390px;
 
     @media ${device.tablet} {
+        width: 280px;
       bottom: 0;
       top: 15%;
       left: 0;
@@ -42,6 +51,7 @@ const Styling = styled.div`
     .hero-wrapper {
       flex: 1;
     }
+    
     .mapboxgl-ctrl-geocoder--icon-search {
     display:block!important;
       background-image:url(../wp-content/themes/tomhemps/src/icons/Arrow_Dark.svg);
@@ -77,12 +87,16 @@ const Styling = styled.div`
         border-radius: 0;
         box-shadow: none;
         border-bottom: 2px solid;
-        max-width: 360px;
+        width: 360px;
+        @media only screen and (max-width:1024px){
+          width:280px;
+        }
         width: auto;
         svg {
           display: none;
         }
         input {
+          max-width: 80%;
           width: auto;
           text-transform: uppercase;
           font-family: 'Bebas Neue Pro';
@@ -140,6 +154,7 @@ class App extends Component {
     super(props)
     this.state = {
       mapOpacity: "0.5",
+      containerPosition: "relative",
       searched: false,
       zoom: 14,
       bounds: [],
@@ -147,11 +162,11 @@ class App extends Component {
       viewport: {
         latitude: 52.521576,
         longitude: 13.389523,
-        zoom: 16,
+        zoom: 4,
       },
       selectedRetailerId: null,
       hoveredRetailerId: null,
-
+      geoPos: "85%",
       filteredRetailerIds: null,
     }
   }
@@ -164,7 +179,9 @@ class App extends Component {
     this.resize()
 
     const retailers = Api.getRetailers()
-    this.setState({ retailers: retailers })
+
+      this.resize();
+
   }
 
   componentWillUnmount() {
@@ -190,20 +207,25 @@ class App extends Component {
         ...this.state.viewport,
         ...viewport,
         transitionInterpolator: new FlyToInterpolator(),
-        transitionDuration: 2000,
+        transitionDuration: 500,
         transitionEasing: Power3.easeInOut,
       },
     })
   }
 
   handleGeocoderViewportChange = viewport => {
+    if(this.state.viewport.width < 1024){
+      this.setState({
+        geoPos: "40vh"
+      })
+    }
     const timeline = new TimelineLite()
     timeline.to(
       this.searchRef.current,
       {
-        duration: 1,
+        duration: 0.7,
         ease: Power3.easeInOut,
-        bottom: '85%',
+        bottom: this.state.geoPos,
       },
       '+=1',
     )
@@ -271,16 +293,17 @@ class App extends Component {
     this.setState({ hoveredRetailerId: id })
   }
 
-  increaseOpacity = event => {
-    document.getElementsByClassName("mapboxgl-map")[0].classList.add("activated");
-  }
-
   onMouseLeave = () => {
     this.setState({ hoveredRetailerId: null })
   }
 
   handleOnResult = event => {
-    this.setState({ searched: true, mapOpacity: "1" })
+    const timeline = new TimelineLite()
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+    this.setState({ searched: true, mapOpacity: "1", containerPosition:'absolute' })
   }
 
 
@@ -307,37 +330,41 @@ class App extends Component {
   }
 
   render() {
-    const { viewport, mapOpacity } = this.state
+    const { viewport, mapOpacity, containerPosition, language } = this.state
 
+    const global = window.rs_global
     return (
       <React.Fragment>
         <GlobalStyle />
         <Styling>
           <div ref={this.searchRef} className="search-container">
             <div className="hero-wrapper">
-              <Hero searched={this.state.searched}></Hero>
+              <Hero searched={this.state.searched} title={global.title} subtitle={global.subtitle} description={global.description}></Hero>
             </div>
 
-            <div ref={this.geocoderRef} className="geocoder-container container"></div>
+            <div style={{ position: containerPosition }} ref={this.geocoderRef} className="geocoder-container container"></div>
           </div>
-
           <MapGL
             style={{ opacity: mapOpacity }}
             ref={this.mapRef}
             {...viewport}
+            dragPan={true}
+            touchZoom={true}
+            doubleClickZoom={false}
+            defaultZoomRate={2}
+            zoomRate={2}
             width="100%"
             height={this.calculateMapHeight()}
             onViewportChange={this.handleViewportChange}
             mapboxApiAccessToken={MAPBOX_TOKEN}
           >
+            <NavigationControl onViewportChange={(viewport) => this.setState({viewport})}/>
             {this.state.retailers.map((retailer, index) =>
               this.renderMarker(retailer, index),
             )}
             <Geocoder
               containerRef={this.geocoderRef}
-              countries={'de'}
-              placeholder={'Land, Stadt, PLZ'}
-              language="de"
+              placeholder={global.placeholder}
               mapRef={this.mapRef}
               onMouseEnter={this.increaseOpacity}
               onResult={this.handleOnResult}
@@ -347,6 +374,7 @@ class App extends Component {
                 return item.place_type
                   .map(i => {
                     return [
+                      'country',
                       'place',
                       'city',
                       'postcode',
@@ -359,10 +387,11 @@ class App extends Component {
                   })
               }}
             />
-            {this.state.searched && this.state.filteredRetailerIds && (
-              <RetailersCounter count={this.state.filteredRetailerIds.length} />
-            )}
+
           </MapGL>
+          {this.state.searched && this.state.filteredRetailerIds && (
+          <RetailersCounter count={this.state.filteredRetailerIds.length} />
+          )}
           {this.state.filteredRetailerIds && (
             <Sidebar
               retailers={this.state.retailers.filter(rtl => {

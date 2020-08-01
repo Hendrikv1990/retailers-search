@@ -18,7 +18,9 @@ const Styling = styled.aside`
   z-index: 2;
   left: 0;
   bottom: 0;
-  height: 12rem;
+      height: auto;
+      padding-top:50px;
+      padding-bottom:50px;
   display: flex;
   flex-direction: column;
   justify-content: center;

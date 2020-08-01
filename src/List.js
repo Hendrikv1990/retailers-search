@@ -8,11 +8,18 @@ const Styling = styled.div`
   flex-wrap: wrap;
   align-items: flex-start;
   align-content: flex-start;
-  flex-direction: row;
+  flex-flow: row wrap;
   justify-content: flex-start;
-  flex-wrap: nowrap;
-  overflow: scroll;
+  overflow: visible;
+  width: 1080px;
+    margin: auto;
+    padding-top:20px;
+    padding-bottom:20px;
+    
+
   @media ${device.tablet} {
+    padding: 0 20px;
+    width:100%;
     overflow: scroll;
     flex-direction: column;
   }
@@ -34,7 +41,7 @@ const List = (props) => {
           )
         })
       ) : (
-        <div>No retailers found in this area.</div>
+        <div className={"no-results"}>Keine Händler gefunden. Versuch bitte eine andere PLZ</div>
       )}
     </Styling>
   )

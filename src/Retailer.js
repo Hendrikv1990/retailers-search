@@ -4,8 +4,7 @@ import { ReactComponent as ArrowSVG } from './assets/arrow.svg'
 import { device } from './assets/Styles'
 
 const Styling = styled.div`
-  height: 177px;
-  flex: 0 1 247px;
+  width:25%;
   cursor: pointer;
   transition: color 0.2s ease-in-out;
   @media ${device.tablet} {
@@ -26,6 +25,11 @@ const Styling = styled.div`
     color: #058273;
   }
 
+.content-contact {
+a {
+color: #058273;
+}
+}
   .content-container {
     flex: 1;
     display: flex;
@@ -35,22 +39,29 @@ const Styling = styled.div`
     height: 100%;
     overflow: hidden;
     .content-header {
+    border-bottom:1px solid ${props => (props.active ? '#058273' : '#00140f')};
       display: flex;
       align-items: baseline;
       width: 100%;
       h3 {
-        flex: 1;
+          flex-basis: 80%;
+        
+        font-size:20px;
+        padding-bottom:5px;
+        text-transform:uppercase;
+        color:${props => (props.active ? '#058273' : '#00140f')};
       }
       .arrow-wrapper {
         @media ${device.tablet} {
           text-align: end;
         }
-        svg {
-          fill: ${props => (props.active ? '#058273' : '#222')};
+        svg, g {
+          stroke: ${props => (props.active ? '#058273' : '#00140f')};
         }
 
-        flex: 1;
+        flex-basis:20%;
       }
+      margin-bottom:30px;
     }
     .content-main {
       flex: 1;
@@ -60,8 +71,9 @@ const Styling = styled.div`
       font-style: normal;
       line-height: 1.5;
       letter-spacing: normal;
+      
 
-      color: ${props => (props.active ? '#058273' : '#55706c')};
+     color:${props => (props.active ? '#058273' : '#00140f')};
     }
     .content-location {
     }
@@ -80,7 +92,7 @@ const Retailer = ({
   selectedRetailerId,
   retailer: {
     id,
-    fields: { name, address, phone_number, email },
+    fields: { name, address, phone_number, email, website },
   },
 }) => {
   return (
@@ -101,6 +113,9 @@ const Retailer = ({
         <div className="content-main content-location">{address}</div>
         <div className="content-main content-contact">{phone_number}</div>
         <div className="content-main content-email">{email}</div>
+        <div className="content-main content-contact">
+            <a href={`${website}`} target="_blank">{website}</a>
+        </div>
       </div>
     </Styling>
   )

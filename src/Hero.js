@@ -35,7 +35,7 @@ const Styling = styled.div`
   }
 `
 
-const Hero = ({ searched }) => {
+const Hero = ({ searched, title, subtitle, description }) => {
   return (
     <Transition
       appear
@@ -56,13 +56,10 @@ const Hero = ({ searched }) => {
     >
       <Styling>
         <div className="container">
-          <span>Händlersuche</span>
-          <h1>Lorem ipsum dolor sit amet.</h1>
+          <span>{subtitle}</span>
+          <h1>{title}</h1>
           <p className="lead">
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-            nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat.
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-            nonummy nibh euismod tincidunt ut laoreet dolore magna.
+        {description}
           </p>
         </div>
       </Styling>

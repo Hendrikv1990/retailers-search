@@ -7,14 +7,15 @@ export default {
     await axios
       .get('https://jsonplaceholder.typicode.com/todos')
       .then((response) => {
-        console.log(response.data)
         result.push(...response.data)
       }
       )
       .catch((error) => {
         console.log(error)
       })
-
+      .then(() => {
+        // always executed
+      })
     return result
   },
 }

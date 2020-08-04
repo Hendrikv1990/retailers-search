@@ -174,14 +174,12 @@ class App extends Component {
   mapRef = React.createRef()
   geocoderRef = React.createRef()
 
-  componentDidMount() {
+  async componentDidMount() {
     window.addEventListener('resize', this.resize)
     this.resize()
 
-    const retailers = Api.getRetailers()
-
-      this.resize();
-
+    const retailers = await Api.getRetailers()
+    this.setState({ retailers })
   }
 
   componentWillUnmount() {

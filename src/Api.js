@@ -5,11 +5,14 @@ export default {
     let result = []
     const rs_global = window.rs_global
     await axios
-      .get('https://jsonplaceholder.typicode.com/todos')
+      .get(rs_global.url + '/wp-json/wp/v2/retailer?per_page=100', {      
+        params: {
+          id: value,
+        },
+      })
       .then((response) => {
         result.push(...response.data)
-      }
-      )
+      })
       .catch((error) => {
         console.log(error)
       })

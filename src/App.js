@@ -156,6 +156,7 @@ class App extends Component {
       mapOpacity: "0.5",
       containerPosition: "relative",
       searched: false,
+      language: 'de',
       zoom: 14,
       bounds: [],
       retailers: [],
@@ -179,9 +180,6 @@ class App extends Component {
     this.resize()
 
     const retailers = Api.getRetailers()
-
-      this.resize();
-
   }
 
   componentWillUnmount() {
@@ -363,6 +361,7 @@ class App extends Component {
               this.renderMarker(retailer, index),
             )}
             <Geocoder
+              language={global.locale}
               containerRef={this.geocoderRef}
               placeholder={global.placeholder}
               mapRef={this.mapRef}

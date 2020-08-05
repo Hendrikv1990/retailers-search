@@ -180,6 +180,8 @@ class App extends Component {
     this.resize()
 
     const retailers = Api.getRetailers()
+
+    this.setState({ retailers })
   }
 
   componentWillUnmount() {
